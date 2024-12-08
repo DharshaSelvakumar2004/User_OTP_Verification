@@ -12,7 +12,7 @@ namespace User_OTP_Verification.Services
         {
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(_settings.EmailFrom));
-            email.To.Add(MailboxAddress.Parse(createEmail.to));
+            email.To.Add(new MailboxAddress("", createEmail.to));
             email.Subject = createEmail.subject;
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
