@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using User_OTP_Verification.Context;
+using User_OTP_Verification.DTOs;
 using User_OTP_Verification.Repositories;
 using User_OTP_Verification.Services;
 
@@ -20,6 +21,7 @@ namespace User_OTP_Verification
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Otp")));
+            builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("EmailConfig"));
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IOtpRepository, OtpRepository>();

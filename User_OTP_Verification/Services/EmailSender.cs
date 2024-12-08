@@ -2,32 +2,39 @@
 using MimeKit;
 using User_OTP_Verification.Configurations;
 using User_OTP_Verification.DTOs;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace User_OTP_Verification.Services
 {
     public class EmailSender : IEmailSender
     {
         private readonly EmailSettings _settings;
+        private readonly EmailConfig emailConfig;
+
+        public EmailSender(EmailSettings settings, EmailConfig emailConfig)
+        {
+            _settings = settings;
+            this.emailConfig = emailConfig;
+        }
 
         public async Task SendEmailAsync(CreateEmail createEmail, string Email)
         {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("nora.gleichner@ethereal.email"));
-            email.To.Add(MailboxAddress.Parse(Email));
-
-            email.Subject = createEmail.subject;
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(emailConfig.FromName, emailConfig.FromAddess));
+            message.To.Add(new MailboxAddress("", createEmail.to));
+            message.Subject = createEmail.subject;
+            message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
                 Text = createEmail.body,
             };
 
-            using var smtp = new SmtpClient();
-            smtp.Connect("smtp.ethereal.email", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            smtp.Authenticate("nora.gleichner@ethereal.email", "UufUaSAWY4wN88J7mZ");
-            smtp.Send(email);
-            smtp.Disconnect(true);
+            using var client = new MailKit.Net.Smtp.SmtpClient();
+            client.Connect(emailConfig.SmtpServer, emailConfig.Port, true);
+            client.Authenticate(emailConfig.Username, emailConfig.Password);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
 
-            
+
         }
 
 
