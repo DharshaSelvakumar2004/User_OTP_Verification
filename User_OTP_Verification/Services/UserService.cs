@@ -44,14 +44,14 @@ namespace User_OTP_Verification.Services
 
            var createMail = new CreateEmail
             {
-                to = user.Id.ToString(),
+                to = user.Email.ToString(),
                 subject = "Your OTP Code",
                 body = $"Your OTP is: {otpCode}"
 
             };
 
             //await _emailSender.SendEmailAsync(user.Email, "Your OTP Code", $"Your OTP is: {otpCode}");
-            await _emailSender.SendEmailAsync(createMail);
+            await _emailSender.SendEmailAsync(createMail,userRequest.Email);
             return new UserResponse {
                 Success = true,
                 Message = "User registered and OTP sent."

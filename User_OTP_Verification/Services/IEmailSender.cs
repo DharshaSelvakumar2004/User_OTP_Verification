@@ -4,6 +4,6 @@ namespace User_OTP_Verification.Services
 {
     public interface IEmailSender
     {
-        Task SendEmailAsync(CreateEmail createEmail);
+        Task SendEmailAsync(CreateEmail createEmail, string Email);
     }
 }

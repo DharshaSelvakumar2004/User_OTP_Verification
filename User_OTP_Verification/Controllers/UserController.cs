@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 using User_OTP_Verification.DTOs;
 using User_OTP_Verification.Services;
 
@@ -33,5 +34,7 @@ namespace User_OTP_Verification.Controllers
             if (!response.Success) return BadRequest(response.Message);
             return Ok(response.Message);
         }
+
+       
     }
 }
