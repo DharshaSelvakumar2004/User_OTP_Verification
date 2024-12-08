@@ -1,0 +1,6 @@
+@User_OTP_Verification_HostAddress = http://localhost:5197
+
+GET {{User_OTP_Verification_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
